@@ -1,0 +1,57 @@
+{% load bootstrap5 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagina de Produtos</title>
+    {% bootstrap_css %}
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Lista de Produtos</h1>
+
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Qtde</th>
+                    <th>Data</th>
+                    <th>Descrição</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in produtos %}
+                <tr>
+                    <td>{{ p.nome }}</td>
+                    <td>{{ p.preco }}</td>
+                    <td>{{ p.qtde }}</td>
+                    <td>{{ p.data }}</td>
+                    <td>{{ p.descricao }}</td>
+                    <td>
+                        <a href="{% url 'urleditarProduto' p.id %}" class="btn btn-primary btn-sm">Editar</a>
+                    </td>
+                    <td>
+                        <form action="{% url 'urlexcluirProduto' p.id %}" method="POST" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="submit" value="Excluir" class="btn btn-danger btn-sm">
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Nenhum produto cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'urlcadastrarProduto' %}" class="btn btn-success">Novo Produto</a>
+    </div>
+</body>
+</html>

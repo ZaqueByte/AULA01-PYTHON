@@ -1,5 +1,6 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from .models import Produto
 
 def index(request):
     context = {'curso': 'Desenvolvimento de Sistemas'}
@@ -8,4 +9,52 @@ def index(request):
 def contatos(request):
     context = {'telefone' : '2050-2050', 'email' : 'carlinhos@gmail.com'}
     return render(request, 'contatos.html', context)
-# Create your views here.
+
+def produto(request):
+    produtos = Produto.objects.all()
+    context = {'produtos': produtos}
+    return render(request,"produto.html", context)
+
+def cadastrarProduto(request):
+    return render(request, "cadastrarProduto.html")
+
+def salvarProduto(request):
+    thisnome = request.POST.get('txtNome')
+    thispreco = request.POST.get('txtPreco')
+    thisqtde = request.POST.get('txtQtde')
+    thisdata = request.POST.get('txtData')
+    thisdescricao = request.POST.get('txtDescricao')
+    
+    produto = Produto(
+        nome = thisnome,
+        preco = float(thispreco),
+        qtde = thisqtde,
+        data = thisdata,
+        descricao = thisdescricao
+    )
+
+    produto.save()
+    return redirect('urlproduto')
+
+def editarProduto(request, id):
+    produto = Produto.objects.get(id=id)
+
+    if request.method == "GET":
+        context = {'p': produto}
+        return render(request, "editarProduto.html", context)
+    else:  # POST
+        produto.nome = request.POST.get('txtNome')
+        produto.preco = request.POST.get('txtPreco').replace(',','.')
+        produto.qtde = request.POST.get('txtQtde')
+        produto.data = request.POST.get('txtData')
+        produto.descricao = request.POST.get('txtDescricao')
+
+        produto.save()
+        return redirect('urlproduto')
+
+def excluirProduto(request, id):
+    produto = get_object_or_404(Produto, id=id)
+    if request.method == "POST":
+        produto.delete()
+        return redirect('urlproduto')
+    return render(request, "excluirProduto.html", {"p": produto})
