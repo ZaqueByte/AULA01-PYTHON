@@ -24,7 +24,18 @@
             <div class="mb-3">
                 <input type="submit" value="Entrar" class="btn btn-primary">
             </div>
+            <div class="mb-3">
+                <a href="{% url 'urlcadastrarUsuario' %}" class="btn btn-sucess">&#10004; Cadastrar</a>
+                
+            </div>
         </form>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                 {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 </body>
 </html>
