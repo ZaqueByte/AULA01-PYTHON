@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Produto
+from datetime import datetime
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import login_required
 
 def index(request):
     context = {'curso': 'Desenvolvimento de Sistemas'}
@@ -25,9 +29,11 @@ def salvarProduto(request):
     thisdata = request.POST.get('txtData')
     thisdescricao = request.POST.get('txtDescricao')
     
+    preco_formatado = thispreco.replace('.','').replace(',','.')
+
     produto = Produto(
         nome = thisnome,
-        preco = float(thispreco),
+        preco = float(preco_formatado),
         qtde = thisqtde,
         data = thisdata,
         descricao = thisdescricao
@@ -42,11 +48,13 @@ def editarProduto(request, id):
     if request.method == "GET":
         context = {'p': produto}
         return render(request, "editarProduto.html", context)
-    else:  # POST
+    else:
         produto.nome = request.POST.get('txtNome')
         produto.preco = request.POST.get('txtPreco').replace(',','.')
         produto.qtde = request.POST.get('txtQtde')
-        produto.data = request.POST.get('txtData')
+        data_string = request.POST.get('txtData')
+        if data_string:
+            produto.data = datetime.strptime(data_string, '%Y-%m-%d').date()
         produto.descricao = request.POST.get('txtDescricao')
 
         produto.save()
@@ -58,3 +66,9 @@ def excluirProduto(request, id):
         produto.delete()
         return redirect('urlproduto')
     return render(request, "excluirProduto.html", {"p": produto})
+
+def entrar(request):
+    if request.method == "GET":
+        return render (request,"entrar.html")
+    else:
+        return HttpResponse('entrou')
