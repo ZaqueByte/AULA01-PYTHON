@@ -1,5 +1,4 @@
 {% load bootstrap5 %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,25 +13,24 @@
         <h1>Página de Login</h1>
 
         <form action="{% url 'urlentrar' %}" method="POST">
-            {%  csrf_token %}
+            {% csrf_token %}
             <div class="mb-3">
                 <input type="text" name="txtUser" placeholder="Digite o seu usuário..." class="form-control" required>
             </div>
+
             <div class="mb-3">
                 <input type="password" name="txtPass" placeholder="Digite a sua senha..." class="form-control" required>
             </div>
+
             <div class="mb-3">
-                <input type="submit" value="Entrar" class="btn btn-primary">
-            </div>
-            <div class="mb-3">
-                <a href="{% url 'urlcadastrarUsuario' %}" class="btn btn-sucess">&#10004; Cadastrar</a>
-                
+                <input type="submit" value="🏃‍♂️‍➡️ Entrar" class="btn btn-primary">
+                <a href="{% url 'urlcadastrarUsuario' %}" class="btn btn-success">➕ Cadastrar</a>
             </div>
         </form>
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-danger">
-                 {{ message }}
+                    {{ message }}
                 </div>
             {% endfor %}
         {% endif %}

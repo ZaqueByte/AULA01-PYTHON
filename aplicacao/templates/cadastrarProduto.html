@@ -1,51 +1,21 @@
-{% load bootstrap5 %}
+{% extends 'global/base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}
+  Novo Produto
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Produto</title>
-    {% bootstrap_css %}
-</head>
-
-<body>
-    <div class="container mt-4">
-        <h1>Cadastro de Produto</h1>
-        <form action="{% url 'urlsalvarProduto' %}" method="POST">
+{% block content %}
+    <div class="container">
+        <form action="{% url 'urlsalvarProduto'%}" method="POST">
             {% csrf_token %}
-            
-            <div class="mb-3">
-                <label for="txtNome" class="form-label">Nome</label>
-                <input type="text" id="txtNome" name="txtNome" placeholder="Digite o nome do produto..." class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="txtPreco" class="form-label">Preço</label>
-                <input type="text" id="txtPreco" name="txtPreco" placeholder="Digite o preço do produto..." class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="txtQtde" class="form-label">Quantidade</label>
-                <input type="number" id="txtQtde" name="txtQtde" placeholder="Digite a quantidade do produto..." class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="txtData" class="form-label">Data de Compra</label>
-                <input type="date" id="txtData" name="txtData" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="txtDescricao" class="form-label">Descrição</label>
-                <input type="text" id="txtDescricao" name="txtDescricao" placeholder="Digite a descrição do produto..." class="form-control">
-            </div>
+            <h1>Cadastro de produto</h1>
+            <input type="text" name="txtNome" placeholder="Digite o nome do produto..." class="form-control">
+            <input type="text" name="txtPreco" placeholder="Digite o preço do produto..." class="form-control">
+            <input type="number" name="txtQtde" placeholder="Digite a qtde do produto..." class="form-control">
+            <input type="date" name="txtData" placeholder="Digite a data de compra..." class="form-control">
+            <input type="text" name="txtDescricao" placeholder="Digite a descrição do produto..." class="form-control">
 
             <input type="submit" value="Salvar" class="btn btn-success">
-            <a href="{% url 'urlproduto' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
-</body>
-
-</html>
+{% endblock %}
