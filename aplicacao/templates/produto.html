@@ -1,0 +1,57 @@
+{% extends 'global/base.html' %}
+
+{% block title %}
+  Produtos
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Lista de Produtos</h1>
+    <div class="mb-3">
+      <a href="{% url 'urlsair' %}" class="btn btn-danger">🏃‍♀️‍➡️ Sair</a>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Preço</th>
+          <th scope="col">Qtde</th>
+          <th scope="col">Data</th>
+          <th scope="col">Descrição</th>
+          <th scope="col">Editar</th>
+          <th scope="col">Excluir</th>
+        </tr>
+      </thead>
+      {% for p in produtos %}
+        <tbody>
+          <tr>
+            <th scope="row">{{ p.id }}</th>
+            <td>{{ p.nome }}</td>
+            <td>R${{ p.preco }}</td>
+            <td>{{ p.qtde }}</td>
+            <td>{{ p.data }}</td>
+            <td>{{ p.descricao }}</td>
+            <td>
+              <form action="{% url 'urleditarProduto' p.id %}" method="GET">
+                {% csrf_token %}
+                <input type="submit" value="Editar" class="btn btn-primary" />
+              </form>
+            </td>
+
+            <td>
+              <form action="{% url 'urlexcluirProduto' p.id %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Excluir" class="btn btn-danger" />
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      {% endfor %}
+    </table>
+    <form action="{% url 'urlcadastrarProduto' %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="Novo Produto" class="btn btn-primary" />
+    </form>
+  </div>
+{% endblock %}
